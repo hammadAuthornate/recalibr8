@@ -4,6 +4,7 @@ import { ArrowLeft, Sparkles, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
+import { generateCompleteCode } from "@/lib/services/AIServer";
 
 export default function AIPrompt() {
   const router = useRouter();
@@ -23,11 +24,15 @@ export default function AIPrompt() {
     if (!prompt.trim()) return;
 
     setIsGenerating(true);
-    // Simulate AI generation
-    setTimeout(() => {
+    try{
+      const code = await generateCompleteCode(prompt);
+      console.log("Code generated successfully:", code);
+      // router.push("/my-strategies");
+    }catch (error) {
+      console.error("Error generating strategy:", error);
+    }finally {
       setIsGenerating(false);
-      router.push("/my-strategies");
-    }, 3000);
+    }
   };
 
   return (
