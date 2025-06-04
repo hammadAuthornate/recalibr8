@@ -3,6 +3,8 @@
 import { Bell, LayoutDashboard, Settings, Store, Target } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import "./SidebarNavigation.css"
+import { useEffect, useRef, useState } from "react";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -18,34 +20,68 @@ export default function SidebarNavigation({
   onClick: (val: boolean) => void;
 }) {
   const pathname = usePathname();
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [bgStyle, setBgStyle] = useState({ top: 0, height: 0, opacity: 0 });
+
+  useEffect(() => {
+    const index = navigation.findIndex((item) =>
+      item.href === '/' ? pathname === '/' : pathname?.startsWith(item.href)
+    );
+
+    if (index !== -1 && itemRefs.current[index]) {
+      const el = itemRefs.current[index];
+      const { offsetTop, offsetHeight } = el!;
+      setBgStyle({
+        top: offsetTop,
+        height: offsetHeight,
+        opacity: 1,
+      });
+    }else {
+      setBgStyle(prev => ({
+        ...prev,
+        opacity: 0,
+      }));
+    }
+  }, [pathname]);
 
   return (
-    <>
-      {/* Navigation */}
-      <nav className="flex-1 px-4 space-y-1">
-        {navigation.map((item) => {
+    <nav className="flex-1 z-0 relative">
+      {/* Background blob */}
+      <div
+        className="w-full bg-white absolute -z-10 menuBackground ml-[10px] max-lg:rounded-full lg:rounded-l-full  transition-all duration-300"
+        style={{
+          top: bgStyle.top,
+          height: bgStyle.height,
+          opacity: bgStyle.opacity,
+        }}
+      ></div>
+
+      {/* Navigation items */}
+      <div className="w-full px-4 space-y-1">
+        {navigation.map((item, index) => {
           const Icon = item.icon;
           const active =
-            item.href === "/"
-              ? pathname === "/"
-              : pathname?.startsWith(item.href);
+            item.href === '/' ? pathname === '/' : pathname?.startsWith(item.href);
           return (
-            <Link
+            <div
               key={item.name}
-              href={item.href}
-              onClick={() => onClick(false)}
-              className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-                active
-                  ? "bg-white/20 text-white"
-                  : "text-white/80 hover:bg-white/10 hover:text-white"
-              }`}
+              ref={(el) => { itemRefs.current[index] = el; }}
+              className="relative"
             >
-              <Icon className="w-5 h-5 mr-3" />
-              <span>{item.name}</span>
-            </Link>
+              <Link
+                href={item.href}
+                onClick={() => onClick(false)}
+                className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
+                  active ? 'text-[#16B191]' : 'text-white/80 hover:text-white'
+                }`}
+              >
+                <Icon className="w-5 h-5 mr-3" />
+                <span>{item.name}</span>
+              </Link>
+            </div>
           );
         })}
-      </nav>
-    </>
+      </div>
+    </nav>
   );
 }

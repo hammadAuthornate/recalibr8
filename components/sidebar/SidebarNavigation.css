@@ -1,0 +1,35 @@
+
+.menuBackground {
+  width: calc(100% - 20px);
+}
+
+@media screen and (min-width: 1024px) {
+  .menuBackground {
+    width: 100%;
+  }
+  .menuBackground::before {
+    content: "";
+    position: absolute;
+    top: -39px;
+    right: 9px;
+    width: 40px;
+    height: 40px;
+    background: url("/edge.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+  .menuBackground::after {
+    content: "";
+    position: absolute;
+    bottom: -39px;
+    right: 9px;
+    width: 40px;
+    height: 40px;
+    transform: rotateZ(270deg) ;
+    background: url("/edge.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+}
