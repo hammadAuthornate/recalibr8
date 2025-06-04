@@ -72,7 +72,7 @@ export default function SidebarNavigation({
                 href={item.href}
                 onClick={() => onClick(false)}
                 className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
-                  active ? 'text-[#16B191]' : 'text-white/80 hover:text-white'
+                  active ? 'text-primary' : 'text-white/80 hover:text-white'
                 }`}
               >
                 <Icon className="w-5 h-5 mr-3" />

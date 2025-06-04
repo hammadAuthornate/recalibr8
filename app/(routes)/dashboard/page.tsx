@@ -1,16 +1,21 @@
 "use client";
 
 import {
-  DollarSign,
-  TrendingUp,
-  Target,
-  Activity,
   MoreHorizontal,
+  CircleDollarSign,
+  ArrowUpRight,
+  Bot,
 } from "lucide-react";
-import { LineChart, Line, ResponsiveContainer } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ResponsiveContainer,
+  Area,
+  Tooltip,
+  AreaChart,
+} from "recharts";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { convertToAreaChartData } from "@/lib/utils";
 
 export default function Dashboard() {
   const chartData = [
@@ -98,117 +103,127 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-3">
       {/* Top Metrics Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Earned Today */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Earned Today</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$150.98</div>
-            <div className="h-[80px] mt-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#10b981"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+        <Card className="justify-between">
+          <div>
+            <div className="flex justify-between px-3 mb-4">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-primary">
+                <CircleDollarSign className="h-5 w-5 text-white" />
+              </div>
+              <div className="w-10 h-10 flex items-center justify-center rounded-full border border-black/70">
+                <ArrowUpRight className="h-5 w-5" />
+              </div>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Earned This Month */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Earned This Month
-            </CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$1,350.98</div>
-            <div className="h-[80px] mt-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#10b981"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+            <div className="px-3">
+              <div className="text-3xl font-[900] tracking-[-1px]">$150.98</div>
+              <div className="text-xl opacity-50 tracking-[-1px]">
+                Earned Today
+              </div>
             </div>
-          </CardContent>
+          </div>
+          <div className="h-[120px] mt-4 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={convertToAreaChartData(chartData)}
+                margin={{
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                }}
+              >
+                <Tooltip />
+                <Area
+                  type="monotone"
+                  dataKey="uv"
+                  stroke="#16b191"
+                  fill="#16b1926e"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </Card>
-
-        {/* Active Strategies */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+        <Card className="justify-between">
+          <div>
+            <div className="flex justify-between px-3 mb-4">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-primary">
+                <CircleDollarSign className="h-5 w-5 text-white" />
+              </div>
+              <div className="w-10 h-10 flex items-center justify-center rounded-full border border-black/70">
+                <ArrowUpRight className="h-5 w-5" />
+              </div>
+            </div>
+            <div className="px-3">
+              <div className="text-3xl font-[900] tracking-[-1px]">
+                $1,350.98
+              </div>
+              <div className="text-xl opacity-50 tracking-[-1px]">
+                Earned This Month
+              </div>
+            </div>
+          </div>
+          <div className="h-[120px] mt-4 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={convertToAreaChartData(chartData)}
+                margin={{
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                }}
+              >
+                <Tooltip />
+                <Area
+                  type="monotone"
+                  dataKey="uv"
+                  stroke="#16b191"
+                  fill="#16b1926e"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+        <Card className="bg-gradient-to-b from-secondary to-primary justify-between">
+          <div className="flex justify-between px-3 mb-4">
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white">
+              <Bot className="h-5 w-5 text-primary" />
+            </div>
+            <div className="w-10 h-10 flex items-center justify-center rounded-full border border-white">
+              <ArrowUpRight className="h-5 w-5 text-white" />
+            </div>
+          </div>
+          <div className="px-4 py-4 text-white">
+            <div className="text-3xl font-[900] tracking-[-1px]">23</div>
+            <div className="text-xl opacity-50 tracking-[-1px]">
               Active Strategies
-            </CardTitle>
-            <Target className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">23</div>
-            <div className="h-[80px] mt-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#10b981"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
             </div>
-          </CardContent>
+          </div>
         </Card>
-
-        {/* Total Strategies */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Strategies
-            </CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">112</div>
-            <div className="h-[80px] mt-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#10b981"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+        <Card className="justify-between">
+          <div className="flex justify-between px-3 mb-4">
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-primary">
+              <Bot className="h-5 w-5 text-white" />
             </div>
-          </CardContent>
+            <div className="w-10 h-10 flex items-center justify-center rounded-full border border-black/70">
+              <ArrowUpRight className="h-5 w-5" />
+            </div>
+          </div>
+          <div className="px-4 py-4">
+            <div className="text-3xl font-[900] tracking-[-1px]">112</div>
+            <div className="text-xl opacity-50 tracking-[-1px]">
+              Total Strategies
+            </div>
+          </div>
         </Card>
       </div>
-
-      {/* Your Strategies Table */}
+      <h2 className="text-2xl font-[900] my-4 tracking-[-1px]">
+        Your Strategies
+      </h2>
       <Card>
-        <CardHeader>
-          <CardTitle>Your Strategies</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">
